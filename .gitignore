@@ -106,3 +106,6 @@ dist
 
 # secret Google Auth
 secret.json
+
+# MAC
+.DS_STORE

@@ -11,6 +11,17 @@ async function getColumns(spreadsheetId) {
   return arrColumns;
 }
 
+// get next id
+async function getNextId(spreadsheetId) {
+  const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range: "a:a" });
+  const arrColumnId = response.data.values
+  arrColumnId.shift() // remove column id name
+  const arrColumnIdNumber = arrColumnId.filter((item)=>Number(item[0]))
+  const currentId = Math.max(...arrColumnIdNumber)
+  const nextId = currentId === -Infinity ? 1 : currentId + 1 
+  return nextId
+}
+
 // get row by id
 async function getRow(spreadsheetId, id) {
   const strId = typeof id === "string" ? id : String(id);
@@ -125,6 +136,7 @@ async function clearValues(spreadsheetId, id) {
 
 export const gSheetFunctions = {
   getColumns,
+  getNextId,
   getRow,
   getValues,
   getValuesNotNull,

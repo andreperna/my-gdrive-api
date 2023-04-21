@@ -62,7 +62,7 @@ const arr = [["id"], ["1"], ["2"], ["3"], ["4"], ["16"], ["17"], ["18"], ["19"],
 // debug(gSheetFunctions.updateValues(spreadsheetId, 23, objToUpdate));
 
 // debug(gSheetFunctions.clearValues(spreadsheetId, 26));
-debug(gSheetFunctions.getValuesNotNull(spreadsheetId));
+// debug(gSheetFunctions.getValuesNotNull(spreadsheetId));
 
 const arrrrr = [1, 2, 5, 10, 20];
 // debug(arrrrr.filter((item) => item !== eval([10, 20].join(" && item !== "))));
@@ -84,3 +84,5 @@ const objNull = {
 };
 
 // debug(filterNotNullObjects(objMultiple));
+
+debug(gSheetFunctions.getNextId(spreadsheetId))
