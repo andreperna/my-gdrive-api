@@ -16,9 +16,9 @@ async function getNextId(spreadsheetId) {
   const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range: "a:a" });
   const arrColumnId = response.data.values
   arrColumnId.shift() // remove column id name
-  const arrColumnIdNumber = arrColumnId.filter((item)=>Number(item[0]))
+  const arrColumnIdNumber = arrColumnId.filter((item) => Number(item[0]))
   const currentId = Math.max(...arrColumnIdNumber)
-  const nextId = currentId === -Infinity ? 1 : currentId + 1 
+  const nextId = currentId === -Infinity ? 1 : currentId + 1
   return nextId
 }
 
@@ -40,6 +40,7 @@ async function getValues(spreadsheetId, range = "a:z") {
     const arrKeys = await getColumns(spreadsheetId);
     const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range });
     const arrValues = response.data.values;
+    arrValues.shift() // remove first line
     return arrayToObject(arrKeys, arrValues);
   } catch {
     return false;
@@ -52,8 +53,38 @@ async function getValuesNotNull(spreadsheetId, range = "a:z") {
     const arrKeys = await getColumns(spreadsheetId);
     const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range });
     const arrValues = response.data.values;
+    arrValues.shift() // remove first line
     const arrResult = arrayToObject(arrKeys, arrValues);
     return filterNotNullObjects(arrResult);
+  } catch {
+    return false;
+  }
+}
+
+// get value by id
+async function getValueById(spreadsheetId, id) {
+  try {
+    const arrKeys = await getColumns(spreadsheetId);
+    const row = await getRow(spreadsheetId, id);
+    const range = `${row}:${row}`;
+    const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range });
+    const arrValues = response.data.values;
+    return arrayToObject(arrKeys, arrValues)[0];
+  } catch {
+    return false;
+  }
+}
+
+// get value by id not null
+async function getValueByIdNotNull(spreadsheetId, id) {
+  try {
+    const arrKeys = await getColumns(spreadsheetId);
+    const row = await getRow(spreadsheetId, id);
+    const range = `${row}:${row}`;
+    const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range });
+    const arrValues = response.data.values;
+    const result = arrayToObject(arrKeys, arrValues);
+    return filterNotNullObjects(result).length ? filterNotNullObjects(result) : false
   } catch {
     return false;
   }
@@ -140,6 +171,8 @@ export const gSheetFunctions = {
   getRow,
   getValues,
   getValuesNotNull,
+  getValueById,
+  getValueByIdNotNull,
   appendValues,
   updateValues,
   clearValues,
