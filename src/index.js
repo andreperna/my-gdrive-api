@@ -19,4 +19,4 @@ import { gSheetFunctions } from "./gSheets/gSheetsFunctions.js";
 // debug(await gDriveFunctions.getSheetId("todos", "tbl_users"))
 
 // debug(await gSheetFunctions.getValuesNotNull(spreadsheetId))
-debug(await gSheetFunctions.getValueByIdNotNull(spreadsheetId, 5))
+debug(await gSheetFunctions.getValuesNotNull(spreadsheetId))

@@ -41,7 +41,9 @@ async function getValues(spreadsheetId, range = "a:z") {
     const response = await gSheets.spreadsheets.values.get({ spreadsheetId, range });
     const arrValues = response.data.values;
     arrValues.shift() // remove first line
-    return arrayToObject(arrKeys, arrValues);
+    return {
+      data: arrayToObject(arrKeys, arrValues)
+    }
   } catch {
     return false;
   }
@@ -55,7 +57,9 @@ async function getValuesNotNull(spreadsheetId, range = "a:z") {
     const arrValues = response.data.values;
     arrValues.shift() // remove first line
     const arrResult = arrayToObject(arrKeys, arrValues);
-    return filterNotNullObjects(arrResult);
+    return {
+      data: filterNotNullObjects(arrResult)
+    }
   } catch {
     return false;
   }
